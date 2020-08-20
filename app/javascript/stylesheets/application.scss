@@ -1,0 +1,63 @@
+@import './bootstrap_custom.scss';
+
+@import '~admin-lte/dist/css/adminlte';
+// @import '~admin-lte/plugins/overlayScrollbars/css/OverlayScrollbars';
+@import '~overlayscrollbars/css/OverlayScrollbars';
+
+@import '~jstree/dist/themes/default/style';
+@import './jstree-proton.scss';
+
+@import 'bootstrap-table/dist/bootstrap-table.css';
+
+@import 'selectize-bootstrap4-theme/dist/css/selectize.bootstrap4.css';
+
+// kaminari red
+.page-item.active .page-link {
+    background-color: #c82333;
+    border-color: #c82333;
+}
+
+.page-link {
+    color: #c82333;
+}
+
+.page-link:hover {
+    color: #c82333;
+  }
+  
+.breadcrumb-item a {
+    color: #c82333;
+}
+
+a {
+    color: #c82333;
+}
+
+// top
+@media(min-width: 768px) {
+  .top-25 {
+    margin-top: 32px;
+  }
+}
+
+// abas vermelhas
+
+.nav-pills .nav-link:not(.active):hover {
+  color: #c82333;
+}
+
+.card-danger {
+  .nav-item .active {
+    background: #c82333;
+  }
+}
+
+.jstree-proton .jstree-clicked {
+  background: #c82333;
+  box-shadow: inset 0 0 1px #c82333;
+}
+
+.jstree-proton .jstree-hovered {
+  background: #e7979f;
+  box-shadow: inset 0 0 1px #e7979f;
+}

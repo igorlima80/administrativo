@@ -1,0 +1,111 @@
+<%= simple_form_for(object) do |f| %>
+  <div class="card card-outline card-danger">
+    <div class="card-header with-border">
+      <h3 class="card-title">
+        Dados do <%=t Provider.model_name.human %>
+      </h3>
+    </div>
+    <div class="card-body">
+      <%= render 'providers/fields', f: f %>
+    </div>
+  </div>
+
+  <div class="card card-outline card-danger">
+    <div class="card-header with-border">
+      <h3 class="card-title">Documentos</h3>
+    </div>
+    <div class="card-body">
+      <div id="documents">
+        <%= f.simple_fields_for :documents do |v| %>
+          <%= render 'document_fields', f: v %>
+        <% end %>
+
+        <div class="control-group">
+          <div class="controls">
+            <%= link_to_add_association f, :documents, id: 'add_document' do %>
+              <div class="btn btn-success">
+                <i class="fa fa-fw fa-plus"></i> Adicionar Documento
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-outline card-danger">
+    <div class="card-header with-border">
+      <h3 class="card-title">Dados Bancários</h3>
+    </div>
+    <div class="card-body">
+      <div id="accounts">
+        <%= f.simple_fields_for :accounts do |v| %>
+          <%= render 'account_fields', f: v %>
+        <% end %>
+
+        <div class="control-group">
+          <div class="controls">
+            <%= link_to_add_association f, :accounts, id: 'add_account' do %>
+              <div class="btn btn-success">
+                <i class="fa fa-fw fa-plus"></i> Adicionar Conta
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-outline card-danger">
+    <div class="card-header with-border">
+      <h3 class="card-title">Telefones</h3>
+    </div>
+    <div class="card-body">
+      <div id="phones">
+        <%= f.simple_fields_for :phones do |v| %>
+          <%= render 'phone_fields', f: v %>
+        <% end %>
+
+        <div class="control-group">
+          <div class="controls">
+            <%= link_to_add_association f, :phones, id: 'add_phone' do %>
+              <div class="btn btn-success">
+                <i class="fa fa-fw fa-plus"></i> Adicionar Telefone
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-outline card-danger">
+    <div class="card-header with-border">
+      <h3 class="card-title">Endereços</h3>
+    </div>
+    <div class="card-body">
+      <div id="addresses">
+        <%= f.simple_fields_for :addresses do |v| %>
+          <%= render 'address_fields', f: v %>
+        <% end %>
+
+        <div class="control-group">
+          <div class="controls">
+            <%= link_to_add_association f, :addresses, id: 'add_address' do %>
+              <div class="btn btn-success">
+                <i class="fa fa-fw fa-plus"></i> Adicionar Endereço
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-outline card-danger">
+    <div class="card-footer">
+      <%= link_to t('.cancel', default: t("helpers.links.cancel")), providers_path, class: 'btn btn-default'  %>
+      <%= f.submit  t('.save', default: t("helpers.links.save")), class: 'btn btn-danger' %>
+    </div>
+  </div>
+<% end %>

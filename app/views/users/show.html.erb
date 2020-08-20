@@ -1,0 +1,46 @@
+<%= render 'shared/show', object: @user, box_class: 'danger',
+  excluded_columns: ['encrypted_password', 'reset_password_token', 'reset_password_token_sent_at']
+%>
+
+<div class="card card-outline card-danger">
+  <div class="card-header with-border">
+    <h3 class="card-title">
+      <%=t Permission.model_name.human.pluralize %>
+    </h3>
+  </div>
+  <div class="card-body">
+    <% @user.responsabilities.each do |r| %>
+      <% unless r.new_record? %>
+        <%= link_to r, method: :delete, class: 'btn btn-danger btn-xs', data: { confirm: 'Tem certeza?', toggle: 'tooltip', placement: 'top', title: 'Apagar' } do %>
+          <%= r.profile&.name %><%= ': ' if r.unit %><%= r.unit&.fullpath %><i class="fa fa-times"></i>
+        <% end %>
+      <% end %>
+    <% end %>
+    <hr>
+    <%= bootstrap_flash %>
+    <div class="row">
+      <%= simple_form_for Responsability.new do |f| %>
+        <%= f.input :user_id, as: :hidden, input_html: { value: @user.id } %>
+        <%= f.association :profile, wrapper_html: { class: 'col-md-6' }, input_html: { class: 'select2' } %>
+        <%= f.association :unit, label_method: :fullpath, wrapper_html: { class: 'col-md-6' }, input_html: { class: 'select2' } %>
+        <div class="col-md-12">
+          <%= f.submit 'Adicionar', class: "btn btn-danger" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="card card-outline card-danger">
+  <div class="card-footer">
+    <%= link_to t('.back', default: t("helpers.links.back")),
+                users_path, class: 'btn btn-default'  %>
+    <%= link_to t('.edit', default: t("helpers.links.edit")),
+                edit_user_path(@user), class: 'btn btn-default' %>
+    <%= link_to t('.destroy', default: t("helpers.links.destroy")),
+                user_path(@user),
+                method: 'delete',
+                data: { confirm: t('.confirm', default: t("helpers.links.confirm", default: 'Are you sure?')) },
+                class: 'btn btn-danger' %>
+  </div>
+</div>

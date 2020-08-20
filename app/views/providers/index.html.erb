@@ -1,0 +1,11 @@
+<%= render 'shared/index', list: @providers, box_class: 'danger',
+  sort_all: true,
+  search_fields: [
+    { field: 'name_cont', label: 'Nome' },
+    { field: 'nickname_cont', label: 'Nome' },
+    { field: 'cpf_cont', label: 'CPF' },
+    { field: 'cnpj_cont', label: 'CNPJ' },
+    { field: 'email_cont', label: 'E-mail' },
+    { field: 'principal_seller_cont', label: 'Vendedor' }
+  ]
+%>

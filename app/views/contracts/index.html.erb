@@ -1,0 +1,83 @@
+<div class="card card-outline card-danger">
+  <div class="card-header with-border">
+    <h3 class="card-title">
+      <%=t Unit.model_name.human %>: <%= @unit.name %>
+    </h3>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-12">
+        <%= search_form_for @q, url: unit_contracts_url(@unit) do |f| %>
+          <div class="row">
+            <%= f.input :moment_gteq, label: 'Data Inicial', as: :date, html5: true, required: false, wrapper_html: { class: 'col-md-3' } %>
+            <%= f.input :moment_lteq, label: 'Data Final', as: :date, html5: true, required: false, wrapper_html: { class: 'col-md-3' } %>
+            <%= f.input :unit_tree, label: 'Filhos?', as: :select, collection: @include_tree, include_blank: false, required: false, wrapper_html: { class: 'col-md-3' } %>
+            <div class="col-md-2 top-25">
+              <%= f.submit 'Pesquisar', class: 'btn btn-default' %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <div class="col-md-12 text-right">
+        <%= link_to new_unit_contract_path(@unit), class: "btn btn-success" do %>
+          <i class='fa fa-plus'></i> Cadastrar Ordem de Serviço
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card card-outline card-danger">
+  <div class="card-header with-border">
+    <h3 class="card-title">
+      <%=t Contract.model_name.human.pluralize %>
+    </h3>
+    <div class="card-tools pull-right">
+      <%= paginate @contracts %>
+    </div>
+  </div>
+  <table class="table styletable table-striped table-hover">
+    <thead>
+      <tr>
+        <th class='text-center'>#</th>
+        <th class='text-center'><%= Contract.human_attribute_name(:user) %></th>
+        <th class='text-center'><%= Contract.human_attribute_name(:task) %></th>
+        <th class='text-center'><%= Contract.human_attribute_name(:provider) %></th>
+        <th class='text-right'><%= Contract.human_attribute_name(:value) %></th>
+        <th class='text-center'><%= Contract.human_attribute_name(:unit) %></th>
+        <th class='text-center'><%= Contract.human_attribute_name(:moment) %></th>
+        <th class='text-center'><%=t '.actions', default: t("helpers.actions") %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @contracts.each do |contract| %>
+        <tr>
+          <td class='text-center'>
+            <%= link_to contract.id, contract %>
+          </td>
+          <td class='text-center'>
+            <%= contract.user&.the_name %>
+          </td>
+          <td class='text-center'>
+            <%= contract.task.name %>
+          </td>
+          <td class='text-center'>
+            <%= contract.provider.name %>
+          </td>
+          <td class='text-right text-red'>
+            <%= number_to_currency contract.value %>
+          </td>
+          <td class='text-center'>
+            <%= link_to contract.unit.fullpath, unit_entries_path(contract.unit) %>
+          </td>
+          <td class='text-center'>
+            <%= l contract.moment, format: :datetime %>
+          </td>
+          <td style='white-space: nowrap' class='text-center'>
+            <%= render 'shared/action_links', object: contract %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

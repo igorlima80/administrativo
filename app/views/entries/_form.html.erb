@@ -1,0 +1,65 @@
+<%= simple_form_for([@unit, @entry]) do |f| %>
+  <div class="card card-outline card-danger">
+    <div class="card-header with-border">
+      <h3 class="card-title">
+        Dados do <%= Entry.model_name.human %>
+      </h3>
+    </div>
+    <div class="card-body">
+      <%= f.input :kind, as: :hidden %>
+      <div class="row">
+        <% unless f.object.kind == 'out_lot' %>
+        <%= f.input :value, wrapper_html: { class: 'col-md-4' }, input_html: { class: 'currency' } %>
+        <% end %>
+        <%= f.association :entry_description,
+          input_html: { class: 'selectize_with_add_without_modal', data: {
+            model: 'entry_description', pluralized: 'entry_descriptions', field: 'name' }
+          },
+          wrapper_html: { class: 'col-md-4' }
+        %>
+        <%= f.input :moment, html5: true, wrapper_html: { class: 'col-md-4' } %>
+      </div>
+    </div>
+  </div>
+
+  <% if f.object.kind == 'out_lot' %>
+    <div class="card card-outline card-danger">
+      <div class="card-header with-border">
+        <h3 class="card-title">
+          <%=t Product.model_name.human.pluralize %>
+        </h3>
+        <%= link_to_add_association f, :components, class: 'btn btn-xs btn-success',
+          data: { 'association-insertion-node': '#products_table > tbody',
+            'association-insertion-method': 'append' } do %>
+          <i class="fa fa-fw fa-plus"></i> Adicionar Produto
+        <% end %>
+      </div>
+      <div class="card-body no-padding">
+        <table class='table table-bordered' id='products_table'>
+          <thead>
+            <tr>
+              <th width='25%'>Categoria</th>
+              <th width='25%'>Produto</th>
+              <th width='25%'>Estoque</th>
+              <th width='10%'>Quantidade</th>
+              <th class='text-right'>Unidade</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <%= f.simple_fields_for :components do |part| %>
+              <%= render 'component_fields', f: part %>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="card card-outline card-danger">
+    <div class="card-footer bg-white">
+      <%= link_to t('.cancel', default: t("helpers.links.cancel")), unit_entries_path(@entry.unit), class: 'btn btn-default'  %>
+      <%= f.submit  t('.save', default: t("helpers.links.save")), class: 'btn btn-danger' %>
+    </div>
+  </div>
+<% end %>

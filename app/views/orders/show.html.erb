@@ -1,0 +1,91 @@
+<div class="card card-outline card-danger">
+  <div class="card-header with-border">
+    <h3 class="card-title">
+      <%=t Order.model_name.human %>
+      <%= link_to :back, class: 'btn btn-default btn-xs' do %>
+        <i class='fa fa-arrow-circle-left'></i> <%= t('.back', default: t("helpers.links.back")) %>
+      <% end %>
+      <%= link_to edit_order_path(@order), class: 'btn btn-warning btn-xs' do %>
+        <i class='fa fa-pencil'></i> <%= t('.edit', default: t("helpers.links.edit")) %>
+      <% end %>
+      <%= link_to orders_path, class: 'btn btn-default btn-xs' do %>
+        <i class='fa fa-bars'></i> Listagem
+      <% end %>
+      <%= link_to order_path(@order, format: :pdf), target: '_blank', class: 'btn btn-danger btn-xs' do %>
+        <i class="fa fa-file-pdf-o"></i> PDF
+      <% end %>
+    </h3>
+  </div>
+  <div class="card-body">
+    <%= render 'show', order: @order %>
+  </div>
+</div>
+
+<div class="card card-outline card-danger">
+  <div class="card-header with-border">
+    <h3 class="card-title">
+      <%=t Product.model_name.human.pluralize %>
+    </h3>
+  </div>
+  <div class="card-body no-padding">
+    <table class="table styletable table-striped table-hover">
+      <thead>
+        <tr>
+          <th class='text-center'>#</th>
+          <th class='text-center'><%= Component.human_attribute_name(:product) %></th>
+          <th class='text-center'><%= Component.human_attribute_name(:category) %></th>
+          <th class='text-right'><%= Component.human_attribute_name(:solicited_quantity) %></th>
+          <th class='text-right'><%= Order.human_attribute_name(:quantity) %></th>
+          <th class='text-right'><%= Component.human_attribute_name(:unit_value) %></th>
+          <th class='text-right'><%= Component.human_attribute_name(:total) %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @order.components.each do |c| %>
+          <tr>
+            <td class='text-center'>
+              <%= c.id %>
+            </td>
+            <td class='text-center'>
+              <%= c.product.name %>
+            </td>
+            <td class='text-center'>
+              <%= c.product.category.name %>
+            </td>
+            <td class='text-right'>
+              <%= c.solicited_quantity %> <%= c.product.unity %>
+            </td>
+            <td class='text-right'>
+              <%= c.quantity %> <%= c.product.unity %>
+            </td>
+            <td class='text-right'>
+              <%= number_to_currency c.unit_value %>
+            </td>
+            <td class='text-right'>
+              <%= number_to_currency c.total_value %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td class="text-right">
+            <strong>
+              TOTAL
+            </strong>
+          </td>
+          <td class='text-right'>
+            <strong>
+              <%= number_to_currency @order.total_value %>
+            </strong>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>

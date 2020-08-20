@@ -1,0 +1,50 @@
+<%= simple_form_for(@order) do |f| %>
+  <div class="card card-outline card-danger">
+    <div class="card-header with-border">
+      <h3 class="card-title">
+        Dados do <%= Order.model_name.human %>
+      </h3>
+    </div>
+    <div class="card-body">
+      <%= render 'orders/show', order: f.object %>
+    </div>
+  </div>
+
+  <div class="card card-outline card-danger">
+    <div class="card-header with-border">
+      <h3 class="card-title">
+        Itens do <%= Order.model_name.human %>
+      </h3>
+    </div>
+    <div class="card-body no-padding">
+      <table class='table table-bordered' id='products_table'>
+        <thead>
+          <tr>
+            <th width='25%' class='text-center'>Categoria</th>
+            <th width='25%' class='text-center'>Produto</th>
+            <th width='25%' class='text-center'>Recebido</th>
+            <th class='text-center'>Unidade</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= f.simple_fields_for :components do |part| %>
+            <tr>
+              <td class='text-center'><%= part.object.category.name %></td>
+              <td class='text-center'><%= part.object.product.name %></td>
+              <td class='text-center'><%= part.input :quantity, label: false %></td>
+              <td class='text-center'><%= part.object.product.unity %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card card-outline card-danger">
+    <div class="card-footer">
+      <%= f.hidden_field :process_lot, value: true %>
+      <%= link_to t('.cancel', default: t("helpers.links.cancel")), :back, class: 'btn btn-default'  %>
+      <%= f.submit  t('.save', default: t("helpers.links.save")), class: 'btn btn-danger' %>
+    </div>
+  </div>
+<% end %>

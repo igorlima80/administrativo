@@ -1,0 +1,81 @@
+<div class="card card-outline card-danger">
+  <div class="card-header with-border">
+    <h3 class="card-title">
+      <%= Entry.model_name.human %>
+      <%= link_to "javascript:history.back()", class: 'btn btn-default btn-xs' do %>
+        <i class='fa fa-arrow-circle-left'></i> <%= t('.back', default: t("helpers.links.back")) %>
+      <% end %>
+      <%= link_to edit_entry_path(@entry), class: 'btn btn-warning btn-xs' do %>
+        <i class='fa fa-pen'></i> <%= t('.edit', default: t("helpers.links.edit")) %>
+      <% end %>
+    </h3>
+  </div>
+  <div class="card-body p-0">
+    <table class='table styletable'>
+      <thead>
+        <tr>
+          <th class="text-center"><%= Entry.human_attribute_name(:user) %></th>
+          <th class="text-center"><%= Entry.human_attribute_name(:unit) %></th>
+          <th class="text-center"><%= Entry.human_attribute_name(:description) %></th>
+          <th class="text-center"><%= Entry.human_attribute_name(:moment) %></th>
+          <th class="text-right"><%= Entry.human_attribute_name(:value) %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="text-center"><%= @entry.user.the_name %></td>
+          <td class="text-center"><%= @entry.unit.fullpath %></td>
+          <td class="text-center"><%= @entry.description %></td>
+          <td class="text-center"><%=l  @entry.moment, format: :datetime %></td>
+          <td class="text-right text-<%= @entry.kind == 'in' ? 'green' : 'red' %>"><%= number_to_currency @entry.value %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<% unless @entry.components.empty? %>
+  <div class="card card-outline card-danger">
+    <div class="card-header with-border">
+      <h3 class="card-title">
+        <%= Product.model_name.human.pluralize %>
+      </h3>
+    </div>
+    <div class="card-body p-0">
+      <table class='table table-striped styletable'>
+        <thead>
+          <tr>
+            <th class="text-center"><%= Component.human_attribute_name(:product) %></th>
+            <th class="text-center"><%= Component.human_attribute_name(:lot) %></th>
+            <th class="text-center"><%= Component.human_attribute_name(:unit) %></th>
+            <th class="text-right"><%= Component.human_attribute_name(:quantity) %></th>
+            <th class="text-right"><%= Component.human_attribute_name(:unit_value) %></th>
+            <th class="text-right"><%= Component.human_attribute_name(:total_value) %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @entry.components.each do |cp| %>
+            <tr>
+              <td class="text-center"><%= cp.product.name %></td>
+              <td class="text-center"><%= cp.lot.id %></td>
+              <td class="text-center"><%= cp.unit.fullpath %></td>
+              <td class="text-right"><%= cp.quantity %></td>
+              <td class="text-right"><%= number_to_currency cp.unit_value %></td>
+              <td class="text-right text-red"><%= number_to_currency(cp.unit_value * cp.quantity) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <th class="text-right">TOTAL</th>
+            <td class="text-right text-red"><%= number_to_currency(@entry.value) %></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+<% end %>

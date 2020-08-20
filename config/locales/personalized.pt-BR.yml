@@ -1,0 +1,213 @@
+# encoding: UTF-8
+pt-BR:
+  activerecord:
+    models: &MODELS
+      account: Dados Bancários
+      address: Endereço
+      bank_account_type: Tipo de Conta
+      bank: Banco
+      bidding: Cotação
+      category: Categoria
+      city: Cidade
+      component: Utilização
+      contract: Ordem de Serviço
+      document_type: Tipo de Documento
+      document: Documento
+      entry: Lançamento
+      entry_description: Descrição
+      lot: Estoque
+      menu_item: Menu
+      order: Pedido
+      permission: Permissão
+      phone: Telefone
+      phone_type: Tipo de Telefone
+      price: Preço
+      product: Produto
+      profile: Perfil
+      provider: Fornecedor
+      quotation: Cotação
+      responsability: Responsabilidade
+      state: Estado
+      supply: Fornecimento
+      task: Serviço
+      unit: Unidade
+      user: Usuário
+      role: Permissão
+    attributes:
+      name_and_description: &BASIC
+        id: "#"
+        name: Nome
+        description: Descrição
+        kind: Tipo
+        created_at: Criação
+        updated_at: Atualização
+      account:
+        <<: *BASIC
+        <<: *MODELS
+        agency: Agência
+        number: Conta
+        operation: Operação
+      address:
+        <<: *BASIC
+        <<: *MODELS
+        zipcode: CEP
+        street: Logradouro
+        number: Número
+        complement: Complemento
+      bank_account_type:
+        <<: *BASIC
+        <<: *MODELS
+      bank:
+        <<: *BASIC
+        <<: *MODELS
+      bidding:
+        <<: *BASIC
+        <<: *MODELS
+        user_name: Usuário
+      category:
+        <<: *BASIC
+        <<: *MODELS
+      city:
+        <<: *BASIC
+        <<: *MODELS
+      component:
+        <<: *BASIC
+        <<: *MODELS
+        lot: Estoque
+        quantity: Quantidade
+        solicited_quantity: Qtd. Pedida
+        total_value: Valor Total
+        unit_value: Valor Unitário
+      contract:
+        <<: *BASIC
+        <<: *MODELS
+        moment: Momento
+        value: Valor
+      document_type:
+        <<: *BASIC
+        <<: *MODELS
+      document:
+        <<: *BASIC
+        <<: *MODELS
+        number: Número
+        emission: Data de Emissão
+        department: Órgão Emissor
+      entry:
+        <<: *BASIC
+        <<: *MODELS
+        value: Valor
+        value_in: Crédito
+        value_out: Débito
+        kind: Tipo
+        moment: Momento
+        sum: Acumulado
+      lot:
+        <<: *BASIC
+        <<: *MODELS
+        moment: Momento
+        products: Produtos
+        quantity: Quantidade
+        status: Estado
+        unit_value: Valor Unitário
+        unit1: Unidade Origem
+        unit2: Unidade Destino
+      menu_item:
+        <<: *BASIC
+        <<: *MODELS
+      order:
+        <<: *BASIC
+        <<: *MODELS
+        quantity: Qtd. Recebida
+        moment: Momento
+        status: Estado
+      permission:
+        <<: *BASIC
+        <<: *MODELS
+        object: Objeto
+        position: Posição
+      phone:
+        <<: *BASIC
+        <<: *MODELS
+        number: Número
+      phone_type:
+        <<: *BASIC
+        <<: *MODELS
+      price:
+        <<: *BASIC
+        <<: *MODELS
+        value: Valor
+      product:
+        <<: *BASIC
+        <<: *MODELS
+        unity: Unidade
+        stock: Estoque nesta Unidade
+        general_stock: Estoque Total
+      profile:
+        <<: *BASIC
+        <<: *MODELS
+      provider:
+        <<: *BASIC
+        <<: *MODELS
+        nickname: Nome de Fantasia
+        cpf: CPF
+        cnpj: CNPJ
+        email: E-mail
+        register: Data de Cadastro
+        principal_seller: Vendedor Principal
+        products: Produtos Fornecidos
+        tasks: Serviços Fornecidos
+      quotation:
+        <<: *BASIC
+        <<: *MODELS
+        list_products: Produtos
+        register: Data de Cadastro
+        prices_value: Valor
+        shipping: Frete
+        term: Prazo
+        user_name: Usuário
+      responsability:
+        <<: *BASIC
+        <<: *MODELS
+      state:
+        <<: *BASIC
+        <<: *MODELS
+      supply:
+        <<: *BASIC
+        <<: *MODELS
+      task:
+        <<: *BASIC
+        <<: *MODELS
+      unit:
+        <<: *BASIC
+        <<: *MODELS
+        fullpath: Caminho
+        parent: Pai
+        parent_name: Pai
+        path: Caminho
+        warehouse: Almoxarifado?
+      user:
+        <<: *BASIC
+        <<: *MODELS
+        name: Nome
+        username: Nome de usuário
+        email: E-mail
+        password: Senha
+      role:
+        <<: *BASIC
+        <<: *MODELS
+  views:
+    pagination:
+      first: "&laquo;"
+      last: "&raquo;"
+      previous: "&lsaquo;"
+      next: "&rsaquo;"
+      truncate: "&hellip;"
+  helpers:
+    page_entries_info:
+      one_page:
+        display_entries:
+          zero: "Nenhum %{entry_name} encontrado(a)"
+          one: "Exibindo <b>1</b> %{entry_name}"
+          other: "Exibindo <b>%{count}</b> %{entry_name}"
+      more_pages:
+        display_entries: "Exibindo %{entry_name} <b>%{first}&nbsp;-&nbsp;%{last}</b> de <b>%{total}</b> no total"

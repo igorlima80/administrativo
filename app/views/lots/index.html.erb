@@ -1,0 +1,138 @@
+<div class="card card-outline card-danger">
+  <div class="card-header with-border">
+    <h3 class="card-title">
+      <%= Unit.model_name.human %>: <%= @unit.name %>
+    </h3>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-12">
+        <%= search_form_for @q, url: unit_lots_url(@unit) do |f| %>
+          <div class="row">
+            <%= f.input :lot_moment_gteq, label: 'Data Inicial', as: :date, html5: true, required: false, wrapper_html: { class: 'col-md-3' } %>
+            <%= f.input :lot_moment_lteq, label: 'Data Final', as: :date, html5: true, required: false, wrapper_html: { class: 'col-md-3' } %>
+            <%= f.input :unit_tree, label: 'Filhos?', as: :select, collection: @include_tree, include_blank: false, required: false, wrapper_html: { class: 'col-md-3' } %>
+            <div class="col-md-2 top-25">
+              <%= f.submit 'Pesquisar', class: 'btn btn-default' %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <% if false %>
+        <div class="col-md-12 text-right">
+          <% if can? :out, @unit.lots.build %>
+            <%= link_to out_unit_lots_path(@unit), class: "btn btn-danger" do %>
+              <i class='fa fa-minus'></i> Consumir Estoque
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="card card-danger card-outline">
+  <div class="card-header d-flex p-0">
+    <div class="nav nav-pills p-2">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a href="#tab_3" class='nav-link active' data-toggle="tab" aria-expanded="false">Produtos</a>
+        </li>
+        <li class="nav-item">
+          <a href="#tab_1" class='nav-link' data-toggle="tab" aria-expanded="true">Movimentações</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="card-body p-0">
+    <div class="tab-content p-0">
+      <div class="tab-pane" id="tab_1">
+        <table class="table styletable table-striped table-hover">
+          <thead>
+            <tr>
+              <th class='text-center'>#</th>
+              <th class='text-left'><%= Lot.human_attribute_name(:product) %></th>
+              <th class='text-right'><%= Lot.human_attribute_name(:quantity) %></th>
+              <th class='text-center'><%= Lot.human_attribute_name(:kind) %></th>
+              <th class='text-center'><%= Lot.human_attribute_name(:unit1) %></th>
+              <th class='text-center'><%= Lot.human_attribute_name(:unit2) %></th>
+              <th class='text-center'><%= Lot.human_attribute_name(:moment) %></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @components.each do |c| %>
+              <% if c.order == nil or c.lot.status == 'confirmed' %>
+                <tr>
+                  <td class='text-center'>
+                    <%= link_to c.lot&.id, c&.lot %>
+                  </td>
+                  <td class='text-left'>
+                    <%= c.product.name %>
+                  </td>
+                  <td class='text-right'>
+                    <%= c.quantity %> <%= c.product.unity %>
+                  </td>
+                  <td class='text-center'>
+                    <%=t c.kind %>
+                  </td>
+                  <td class='text-center'>
+                    <%= link_to c.component.lot.unit.fullpath, unit_lots_path(c.component.lot.unit) if c.component %>
+                  </td>
+                  <td class='text-center'>
+                    <%= link_to c.lot.unit.fullpath, unit_lots_path(c.lot.unit) %>
+                  </td>
+                  <td class='text-center'>
+                    <%=l c.lot.moment, format: :datetime if c.lot.moment %>
+                  </td>
+                </tr>
+              <% end %>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <!-- /.tab-pane -->
+      <div class="tab-pane active" id="tab_3">
+        <div class="row">
+          <div class="col-md-12 text-right">
+            <%= link_to unit_lots_path(@unit, format: :pdf, q: params[:q].to_json), target: '_blank', class: 'btn btn-danger btn-xs' do %>
+              <i class="fa fa-file-pdf"></i> Exportar para PDF
+            <% end %>
+          </div>
+        </div>
+        <table class="table styletable table-striped table-hover">
+          <thead>
+            <tr>
+              <th class='text-center'>#</th>
+              <th class='text-left'><%= Product.human_attribute_name(:name) %></th>
+              <th class='text-center'><%= Product.human_attribute_name(:unity) %></th>
+              <th class='text-right'><%= Product.human_attribute_name(:stock) %></th>
+              <th class='text-right'><%= Product.human_attribute_name(:general_stock) %></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @products.each do |product| %>
+              <tr>
+                <td class='text-center'>
+                  <%= link_to product.id, product %>
+                </td>
+                <td class='text-left'>
+                  <%= product.name %>
+                </td>
+                <td class='text-center'>
+                  <%= product.unity %>
+                </td>
+                <td class='text-right'>
+                  <%= product.stock(unit_id: @unit.id) %>
+                </td>
+                <td class='text-right'>
+                  <%= product.stock %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <!-- /.tab-pane -->
+    </div>
+  </div>
+</div>

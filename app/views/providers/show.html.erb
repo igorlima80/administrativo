@@ -1,0 +1,10 @@
+<%= render 'shared/show', object: @provider, box_class: 'danger',
+  relationships: {
+    products: ['id', 'name', 'unity'],
+    tasks: ['id', 'name', 'description'],
+    documents: ['id', 'document_type_id', 'number', 'emission', 'state_id'],
+    accounts: ['id', 'bank_id', 'bank_account_type_id', 'agency', 'number', 'operation'],
+    phones: ['id', 'phone_type_id', 'number'],
+    addresses: ['id', 'description', 'zipcode', 'street', 'number', 'complement', 'city_id']
+  }
+%>

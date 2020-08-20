@@ -1,0 +1,5 @@
+<%= render 'shared/show', object: @task, box_class: 'danger',
+  relationships: {
+    providers: ['id', 'name', 'nickname']
+  }
+%>

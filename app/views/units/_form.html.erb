@@ -1,0 +1,19 @@
+<%= simple_form_for(@unit) do |f| %>
+  <div class="card card-outline card-danger">
+    <div class="card-header with-border">
+      <h3 class="card-title">
+        Dados da <%= Unit.model_name.human %>
+      </h3>
+    </div>
+    <div class="card-body">
+      <%= f.input :name %>
+      <%= f.input :description %>
+      <%= f.association :parent, label_method: :fullpath %>
+      <%= f.input :warehouse %>
+    </div>
+    <div class="card-footer">
+      <%= link_to t('.cancel', default: t("helpers.links.cancel")), units_path, class: 'btn btn-default'  %>
+      <%= f.submit  t('.save', default: t("helpers.links.save")), class: 'btn btn-danger' %>
+    </div>
+  </div>
+<% end %>

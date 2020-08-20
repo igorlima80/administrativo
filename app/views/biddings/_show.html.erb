@@ -1,0 +1,16 @@
+<table class="table table-bordered table-striped no-padding styletable">
+  <thead>
+    <th><%= Bidding.human_attribute_name(:name) %></th>
+    <th><%= Bidding.human_attribute_name(:description) %></th>
+    <th><%= Product.model_name.human.pluralize %></th>
+    <th><%= Task.model_name.human.pluralize %></th>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= bidding.name %></td>
+      <td><%= bidding.description %></td>
+      <td><%= bidding.list_products %></td>
+      <td><%= bidding.list_tasks %></td>
+    </tr>
+  </tbody>
+</table>

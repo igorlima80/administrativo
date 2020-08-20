@@ -1,0 +1,19 @@
+<%# frozen_string_literal: true %>
+<%%= simple_form_for(@<%= singular_table_name %>) do |f| %>
+  <div class="card card-danger">
+    <div class="card-header with-border">
+      <h3 class="card-title">
+        Dados do <%%=t <%= singular_name.camelize %>.model_name.human %>
+      </h3>
+    </div>
+    <div class="card-body">
+    <%- attributes.each do |attribute| -%>
+      <%%= f.<%= attribute.reference? ? :association : :input %> :<%= attribute.name %> %>
+    <%- end -%>
+    </div>
+    <div class="card-footer">
+      <%%= link_to t('.cancel', default: t("helpers.links.cancel")), <%= plural_name %>_path, class: 'btn btn-default'  %>
+      <%%= f.submit  t('.save', default: t("helpers.links.save")), class: 'btn btn-danger' %>
+    </div>
+  </div>
+<%% end %>

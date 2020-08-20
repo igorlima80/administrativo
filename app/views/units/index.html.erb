@@ -1,0 +1,72 @@
+<div class="card card-outline card-danger">
+  <div class="card-header with-border">
+    <h3 class="card-title">
+      Pesquisar <%=t Unit.model_name.human %>
+    </h3>
+  </div>
+  <div class="card-body">
+    <%= search_form_for @q do |f| %>
+      <div class="row">
+        <%= f.input :name_cont, label: 'Nome', required: false, wrapper_html: { class: 'col-md-3' } %>
+        <%= f.input :ancestry_cont, label: 'Pai', required: false, collection: Unit.order(:name),
+          wrapper_html: { class: 'col-md-3' }, input_html: { class: 'select2' }
+        %>
+        <div class="col-md-12">
+          <%= f.submit 'Pesquisar', class: 'btn btn-danger' %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="card card-outline card-danger">
+  <div class="card-header with-border">
+    <h3 class="card-title">
+      <%= Unit.model_name.human.pluralize %>
+      <% if can? :create, Unit %>
+        <%= link_to new_unit_url, class: "btn btn-danger btn-xs" do %>
+          Cadastrar <i class='fa fa-plus'></i>
+        <% end %>
+      <% end %>
+    </h3>
+    <div class="card-tools pull-right">
+      <%= paginate @units %>
+    </div>
+  </div>
+  <table class="table table-striped styletable">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th><%= Unit.human_attribute_name(:name) %></th>
+        <th><%= Unit.human_attribute_name(:path) %></th>
+        <th><%= Unit.human_attribute_name(:parent) %></th>
+        <th><%= Unit.human_attribute_name(:warehouse) %></th>
+        <th class='text-center'><%=t '.actions', default: t("helpers.actions") %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @units.each do |unit| %>
+      <tr>
+        <td>
+          <%= link_to unit.id, unit, class: 'text-danger' %>
+        </td>
+        <td>
+          <%= unit.name %>
+        </td>
+        <td>
+          <%= unit.fullpath %>
+        </td>
+        <td>
+          <%= unit.parent&.name %>
+        </td>
+        <td>
+          <%=t unit.warehouse %>
+        </td>
+        <td style='white-space: nowrap' class='text-center'>
+          <%= render 'shared/action_links', object: unit %>
+        </td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

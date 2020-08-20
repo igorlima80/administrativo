@@ -1,0 +1,49 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+pt-BR:
+  of: 'de'
+  in: "Entrada"
+  out: "Saída"
+  confirmed: "Confirmado"
+  new: "Novo"
+  paid: "Pago"
+  processed: "Conferido"
+  breadcrumbs:
+    application:
+      root: "Index"
+    pages:
+      pages: "Pages"
+  helpers:
+    actions: "Ações"
+    links:
+      back: "Voltar"
+      cancel: "Cancelar"
+      confirm: "Tem Certeza?"
+      destroy: "Apagar"
+      new: "Cadastrar"
+      edit: "Editar"
+      index: "Listagem"
+      save: "Salvar"
+      save_and_continue: "Salvar e Continuar"
+      save_and_finalize: "Salvar e Finalizar"
+      save_success: "Objeto %{model} armazenado com sucesso!"
+      destroyed: "Objeto %{model} apagado com sucesso!"
+      create_error: "Não foi possível salvar %{model}!"
+      update_error: "Não foi possível atualizar %{model}!"
+    titles:
+      create: "Cadastrar"
+      delete: "Apagar"
+      edit: "Editar"
+      in: Creditar
+      index: "Listagem"
+      out: Debitar
+      new: "Cadastrar"
+      save: "Salvar"
+      search: "Pesquisar"
+      show: "Visualizar"
+      update: "Editar"
+    paper_trail:
+      create: criou
+      update: atualizou
+      delete: apagou

@@ -1,0 +1,8 @@
+<%= render 'shared/index', list: @categories, box_class: 'danger',
+  sort_fields: [
+    'id', 'name', 'code'
+  ],
+  search_fields: [
+    { field: 'name_cont', label: 'Nome' }
+  ]
+%>

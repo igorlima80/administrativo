@@ -1,0 +1,26 @@
+<div class="card card-outline card-danger">
+  <div class="card-header with-border">
+    <h3 class="card-title">Cotação</h3>
+    <% if can? :edit, @bidding %> <!--verificando se o usuario esta logado-->
+      <%= link_to new_bidding_path, class: "btn btn-danger btn-xs", data: { toggle: 'tooltip', placement: 'top', title: 'Cadastrar' } do %>
+        <i class="fa fa-plus"></i> Cadastrar
+      <% end %>
+    <% end %>
+    <%= link_to 'Listagem', biddings_path, class: "btn btn-default btn-xs" %>
+  </div>
+  <div class="card-body no-padding">
+    <%= render 'biddings/show', bidding: @bidding %>
+  </div>
+</div>
+
+<%= render 'shared/index', list: @quotations, box_class: 'danger',
+  additional_columns: ['list_products'],
+  nested_resource: true,
+  parent_resource: 'bidding',
+  sort_fields: ['id', 'register', 'shipping_cents', 'provider_id'],
+  excluded_columns: ['user_id'],
+  additional_columns: ['user_name', 'prices_value_cents'],
+  search_fields: [
+    { field: 'provider_name_cont', label: 'Fornecedor' }
+  ]
+%>

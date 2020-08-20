@@ -1,0 +1,40 @@
+<div class="content-header">
+  <% unless controller_name == "registrations" or controller_name == "sessions" or controller_name == "home" %>
+    <%- value = "helpers.titles.#{action_name}" -%>
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark">
+            <%=t value %>
+            <% if action_name == "index" %>
+              <%=t 'of' %> <%= Kernel.const_get(controller_name.singularize.camelize).model_name.human.downcase.pluralize %>
+            <% else %>
+              <%= Kernel.const_get(controller_name.singularize.camelize).model_name.human.downcase %>
+            <% end -%>
+            <small class='text-red'>
+              <%= @app_name %>
+            </small>
+          </h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class='breadcrumb-item'>
+              <%= link_to root_url do %>
+                <i class="fa fa-home"></i> Início
+              <% end %>
+            </li>
+            <% if @unit %>
+              <% @unit.path.each do |un| %>
+                <li class='breadcrumb-item active'>
+                  <%= link_to un.name, unit_entries_path(un) %>
+                </li>
+              <% end %>
+            <% end %>
+            <!-- <li><a href="#">Examples</a></li>
+            <li class="active">Blank page</li> -->
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  <% end %>
+</div>

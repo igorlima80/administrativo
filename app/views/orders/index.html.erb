@@ -1,0 +1,118 @@
+<div class="card card-outline card-danger">
+  <div class="card-header with-border">
+    <h3 class="card-title">
+      <%= Order.model_name.human.pluralize %>
+    </h3>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-12">
+        <%= search_form_for @q, url: orders_url(@unit) do |f| %>
+          <div class="row">
+            <%= f.input :moment_gteq, label: 'Data Inicial', as: :date, html5: true, required: false, wrapper_html: { class: 'col-md-3' } %>
+            <%= f.input :moment_lteq, label: 'Data Final', as: :date, html5: true, required: false, wrapper_html: { class: 'col-md-3' } %>
+            <%= f.input :lots_status_eq, label: 'Estado', as: :select,
+              collection: [['Conferido', 'processed'], ['Novo', "new"], ['Pago', 'paid']],
+              required: false, wrapper_html: { class: 'col-md-3' } %>
+            <%= f.input :unit_id_eq, label: 'Unidade', collection: Unit.where(warehouse: true),
+              method: :fullpath, required: false, wrapper_html: { class: 'col-md-3' },
+              input_html: { class: 'select2'}
+            %>
+            <div class="col-md-2">
+              <%= f.submit 'Pesquisar', class: 'btn btn-default' %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <div class="col-md-12 text-right">
+        <%= link_to new_order_path(@unit), class: "btn btn-success" do %>
+          <i class='fa fa-plus'></i> Cadastrar Pedido
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card card-outline card-danger">
+  <div class="card-header with-border">
+    <h3 class="card-title">
+      Pedidos
+    </h3>
+    <div class="text-muted">
+      <% unless @presence == "1" %>
+        <%= page_entries_info @orders, entry_name: '' %>
+      <% end %>
+    </div>
+    <div class="card-tools pull-right">
+      <%= paginate @orders %>
+    </div>
+  </div>
+  <div class="card-body p-0">
+    <table class="table styletable table-striped table-hover">
+      <thead>
+        <tr>
+          <th class='text-center'>#</th>
+          <th class='text-center'><%= Order.human_attribute_name(:user) %></th>
+          <th class='text-center'><%= Order.human_attribute_name(:provider) %></th>
+          <th class='text-center'><%= Order.human_attribute_name(:status) %></th>
+          <th class='text-center'><%= Order.human_attribute_name(:unit) %></th>
+          <th class='text-center'><%= Order.human_attribute_name(:moment) %></th>
+          <th class='text-center'>PDF</th>
+          <th class='text-center'><%=t '.actions', default: t("helpers.actions") %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @orders.each do |o| %>
+          <tr>
+            <td class='text-center'>
+              <%= link_to o.id, o %>
+            </td>
+            <td class='text-center'>
+              <%= o.user.the_name %>
+            </td>
+            <td class='text-center'>
+              <%= o.provider.name %>
+            </td>
+            <td class='text-center'>
+              <%= display_status(o.lot.status) %>
+              <% if o.inconsistent? %>
+                <span class='label label-danger'>
+                  inconsistência
+                </span>
+              <% end %>
+            </td>
+            <td class='text-center'>
+              <%= link_to o.unit.fullpath, orders_path(q: { unit_id_eq: o.unit_id }) %>
+            </td>
+            <td class='text-center'>
+              <%=l o.moment, format: :datetime if o.moment %>
+            </td>
+            <td class='text-center'>
+              <%= link_to order_path(o, format: :pdf), target: '_blank', class: 'btn btn-danger btn-xs' do %>
+                <i class="fa fa-file-pdf-o"></i> PDF
+              <% end %>
+            </td>
+            <td style='white-space: nowrap' class='text-center'>
+              <%= render 'shared/action_links', object: o do %>
+                <% if o.lot.status == 'processed' && !o.inconsistent? %>
+                  <li>
+                    <%= link_to pay_order_path(o), data: { toggle: 'tooltip', placement: 'top', title: 'Liberar Pagamento' } do %>
+                      <i class="fa fa-money"></i> Liberar Pagamento
+                    <% end %>
+                  </li>
+                <% end %>
+                <% if o.lot.status == 'new' %>
+                  <li>
+                    <%= link_to in_order_path(o), data: { toggle: 'tooltip', placement: 'top', title: 'Conferir Pedido' } do %>
+                      <i class="fa fa-check"></i> Conferir Pedido
+                    <% end %>
+                  </li>
+                <% end %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

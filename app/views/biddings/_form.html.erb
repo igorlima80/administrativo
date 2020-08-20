@@ -1,0 +1,74 @@
+<%= simple_form_for(object) do |f| %>
+  <div class="card card-outline card-danger">
+    <div class="card-header with-border">
+      <h3 class="card-title">
+        Dados da <%=t Bidding.model_name.human %>
+      </h3>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <%= f.input :name, wrapper_html: { class: 'col-md-4' } %>
+        <%= f.input :description, wrapper_html: { class: 'col-md-8' } %>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-outline card-danger">
+    <div class="card-header with-border">
+      <h3 class="card-title">Produtos</h3>
+    </div>
+    <div class="card-body">
+      <div id="bidding_products">
+        <%= f.simple_fields_for :bidding_items do |v| %>
+          <% unless v.object.product_id.nil? %>
+            <%= render 'bidding_item_fields', f: v, kind: 'product' %>
+          <% end %>
+        <% end %>
+
+        <div class="control-group">
+          <div class="controls">
+            <%= link_to_add_association f, :bidding_items, id: 'add_price',
+              render_options: { locals: { kind: 'product' }} do %>
+              <div class="btn btn-success">
+                <i class="fa fa-fw fa-plus"></i> Adicionar Produto
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-outline card-danger">
+    <div class="card-header with-border">
+      <h3 class="card-title">Serviços</h3>
+    </div>
+    <div class="card-body">
+      <div id="bidding_tasks">
+        <%= f.simple_fields_for :bidding_items do |v| %>
+          <% unless v.object.task_id.nil? %>
+            <%= render 'bidding_item_fields', f: v, kind: 'task' %>
+          <% end %>
+        <% end %>
+
+        <div class="control-group">
+          <div class="controls">
+            <%= link_to_add_association f, :bidding_items, id: 'add_price',
+              render_options: { locals: { kind: 'task' }} do %>
+              <div class="btn btn-success">
+                <i class="fa fa-fw fa-plus"></i> Adicionar Serviço
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-outline card-danger">
+    <div class="card-footer">
+      <%= link_to t('.cancel', default: t("helpers.links.cancel")), biddings_path, class: 'btn btn-default'  %>
+      <%= f.submit  t('.save', default: t("helpers.links.save")), class: 'btn btn-danger' %>
+    </div>
+  </div>
+<% end %>

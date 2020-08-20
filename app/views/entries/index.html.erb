@@ -1,0 +1,141 @@
+<div class="card card-outline card-danger">
+  <div class="card-header with-border">
+    <h3 class="card-title">
+      <%= Unit.model_name.human %>: <%= @unit.name %>
+    </h3>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-12">
+        <%= search_form_for @q, url: unit_entries_url(@unit) do |f| %>
+          <div class="row">
+            <%= f.input :moment_gteq, label: 'Data Inicial', as: :date, html5: true, required: false, wrapper_html: { class: 'col-md-3' } %>
+            <%= f.input :moment_lteq, label: 'Data Final', as: :date, html5: true, required: false, wrapper_html: { class: 'col-md-3' } %>
+            <%= f.input :unit_tree, label: 'Filhos?', as: :select, collection: @include_tree, include_blank: false, required: false, wrapper_html: { class: 'col-md-3' } %>
+            <div class="col-md-2 top-25">
+              <%= f.submit 'Pesquisar', class: 'btn btn-default' %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-12 text-right">
+            <% if can?(:in, @unit.entries.build) %>
+              <%= link_to in_unit_entries_path(@unit), class: "btn btn-success" do %>
+                <i class='fa fa-plus'></i> Lançar Crédito
+              <% end %>
+            <% end %>
+            <% if can? :out, @unit.entries.build %>
+              <%= link_to out_unit_entries_path(@unit), class: "btn btn-danger" do %>
+                <i class='fa fa-minus'></i> Lançar Débito
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card card-outline card-danger">
+  <div class="card-header with-border">
+    <h3 class="card-title">
+      <%= Entry.model_name.human.pluralize %>
+    </h3>
+    <div class="card-tools pull-right">
+      <%= paginate @entries %>
+    </div>
+  </div>
+  <div class="card-body p-0">
+    <table class="table table-striped styletable" data-show-footer='true'>
+      <thead>
+        <tr>
+          <th data-priority="1" class='text-center'>#</th>
+          <th data-priority="6" class='text-center'><%= Entry.human_attribute_name(:user) %></th>
+          <th data-priority="5" class='text-center'><%= Entry.human_attribute_name(:description) %></th>
+          <% if can?(:in, @unit.entries.build) %>
+          <th data-priority="2" class='text-right'><%= Entry.human_attribute_name(:value_in) %></th>
+          <% end %>
+          <th data-priority="2" class='text-right'><%= Entry.human_attribute_name(:value_out) %></th>
+          <th data-priority="3" class='text-right'><%= Entry.human_attribute_name(:sum) %></th>
+          <th data-priority="4" class='text-center'><%= Entry.human_attribute_name(:unit) %></th>
+          <th data-priority="7" class='text-center'><%= Entry.human_attribute_name(:moment) %></th>
+          <th data-priority="8" class='text-center'><%=t '.actions', default: t("helpers.actions") %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class='text-center'></td>
+          <td class='text-center'></td>
+          <td class='text-center'><strong>Anterior</strong></td>
+          <% if can?(:in, @unit.entries.build) %>
+          <td class='text-green text-right'></td>
+          <% end %>
+          <td class='text-red text-right'></td>
+          <td class='<%= @previous_value > 0 ? 'text-green' : 'text-red' %> text-right'><%= number_to_currency @previous_value / 100.0 %></td>
+          <td class='text-center'></td>
+          <td class='text-center'></td>
+          <td></td>
+        </tr>
+        <% @entries.each do |entry| %>
+          <% if (can?(:in, @unit.entries.build) && entry.kind == 'in') || entry.kind == 'out' %>
+            <tr>
+              <td class='text-center'>
+                <%= link_to entry.id, entry %>
+              </td>
+              <td class='text-center'>
+                <%= entry.user&.the_name %>
+              </td>
+              <td class='text-center'>
+                <%= entry.description %>
+              </td>
+              <% if can?(:in, @unit.entries.build) %>
+              <td class='text-nowrap text-green text-right'>
+                <%= number_to_currency entry.value.to_f if entry.kind == 'in' %>
+              </td>
+              <% end %>
+              <td class='text-nowrap text-red text-right'>
+                <%= number_to_currency entry.value.to_f if entry.kind == 'out' || entry.kind == 'out_lot' %>
+              </td>
+              <% @previous_value = @previous_value + entry.value_cents if entry.kind == 'in' %>
+              <% @previous_value = @previous_value - entry.value_cents if entry.kind == 'out' || entry.kind == 'out_lot' %>
+              <td class='text-nowrap <%= @previous_value > 0 ? 'text-green' : 'text-red' %> text-right'>
+                <%= number_to_currency @previous_value / 100.0 %>
+              </td>
+              <td class='text-center'>
+                <small>
+                  <%= link_to entry.unit.fullpath.split(' > ').join(' > <br>').html_safe, unit_entries_path(entry.unit) %>
+                </small>
+              </td>
+              <td class='text-center'>
+                <%= l entry.moment, format: :datetime %>
+              </td>
+              <td style='white-space: nowrap' class='text-center'>
+                <%= render 'shared/action_links', object: entry %>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class='text-center'></td>
+          <td class='text-center'></td>
+          <td class='text-center'><strong>Total</strong></td>
+          <% if can?(:in, @unit.entries.build) %>
+            <td class='text-green text-right'><%= number_to_currency @total_in / 100.0 %></td>
+          <% end %>
+          <td class='text-red text-right'><%= number_to_currency @total_out / 100.0 %></td>
+          <td class='<%= @previous_value > 0 ? 'text-green' : 'text-red' %> text-right'>
+            <%= number_to_currency @previous_value / 100.0 %>
+          </td>
+          <td class='text-center'></td>
+          <td class='text-center'></td>
+          <td class='text-center'></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+

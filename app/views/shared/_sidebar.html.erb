@@ -1,0 +1,80 @@
+<aside class="main-sidebar elevation-4 sidebar-light-danger">
+  <!-- Brand Logo -->
+  <%= link_to root_path, class: 'brand-link navbar-danger' do %>
+    <span class="logo-lg">
+      <%= image_tag 'chaleville-flor.png', class: 'brand-image', width: '50px' %>
+    </span>
+    <span class="brand-text text-white">
+      <strong>SGC</strong>
+    </span>
+  <% end %>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <% @menu.each do |mi| %>
+          <% if can? mi.permission.to_sym, eval_with_rescue(mi.permission_check) %>
+            <% unless mi.menu_items.exists? %>
+              <li class='nav-item'>
+                <%= link_to eval(mi.link), class: "nav-link #{"active" if controller_name == mi.active_test}" do %>
+                  <i class="nav-icon fas fa-<%= mi.icon %>"></i>
+                  <p><%= mi.name %></p>
+                <% end %>
+              </li>
+            <% else %>
+              <li class="nav-item has-treeview <%= 'menu-open' if mi.menu_items.pluck(:active_test).include? controller_name %>">
+                <a href="#" class="nav-link <%= 'active' if mi.menu_items.pluck(:active_test).include? controller_name %>">
+                  <i class="nav-icon fas fa-<%= mi.icon %>"></i>
+                  <p>
+                    <%= mi.name %>
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <% mi.menu_items.each do |c| %>
+                    <!-- mostrar filhos do menu apenas se tiver permissão -->
+                    <% if can? c.permission.to_sym, eval_with_rescue(c.permission_check) %>
+                      <% unless c.menu_items.exists? %>
+                        <li class='nav-item'>
+                          <%= link_to eval(c.link), target: c.target, class: "nav-link #{'active' if controller_name == c.active_test}" do %>
+                            <i class="nav-icon fas fa-<%= c.icon %>"></i>
+                            <p><%= c.name %></p>
+                          <% end %>
+                        </li>
+                      <% else %>
+                        <li class="nav-item has-treeview <%= 'menu-open' if mi.menu_items.pluck(:active_test).include? controller_name %>">
+                          <a href="#" class="nav-link <%= 'active' if mi.menu_items.pluck(:active_test).include? controller_name %>">
+                            <i class="nav-icon fas fa-<%= c.icon %>"></i>
+                            <p>
+                              <%= c.name %>
+                              <i class="right fas fa-angle-left"></i>
+                            </p>
+                          </a>
+                          <ul class="nav nav-treeview">
+                            <% c.menu_items.each do |cc| %>
+                              <li class='nav-item'>
+                                <%= link_to eval(cc.link), target: cc.target, class: "nav-link #{'active' if controller_name == cc.active_test}" do %>
+                                  <i class="nav-icon fas fa-<%= cc.icon %>"></i>
+                                  <p>
+                                    <%= cc.name %>
+                                  </p>
+                                <% end %>
+                              </li>
+                            <% end %>
+                          </ul>
+                        </li>
+                      <% end %>
+                    <% end %>
+                  <% end %>
+                </ul>
+              </li>
+            <% end %>
+          <% end %>
+        <% end %>
+      </ul>
+    </nav>
+    <!-- /.sidebar-menu -->
+  </div>
+  <!-- /.sidebar -->
+  </aside>

@@ -1,0 +1,38 @@
+#        Waiting for container to be ready
+#        Creating container database
+#        Securing connection to database
+# =====> Postgres container created: chaleville_production
+# =====> Container Information
+#        Config dir:          /var/lib/dokku/services/postgres/chaleville_production/config
+#        Data dir:            /var/lib/dokku/services/postgres/chaleville_production/data
+#        Dsn:                 postgres://postgres:b2f2bb260fc2442c020eb2962cac2234@dokku-postgres-chaleville-production:5432/chaleville_production
+#        Exposed ports:       -
+#        Id:                  606fa07dd92aeaab9abfbe5dfa2f013d5c7b86fc52452ded14b9c3cd213cd29b
+#        Internal ip:         172.17.0.2
+#        Links:               -
+#        Service root:        /var/lib/dokku/services/postgres/chaleville_production
+#        Status:              running
+#        Version:             postgres:10.4
+# configuracoes do banco  
+
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  host: localhost
+  username: postgres
+  password: root
+
+development:
+  <<: *default
+  database: chaleville_development
+
+test:
+  <<: *default
+  database: chaleville_test
+
+production:
+  <<: *default
+  database: chaleville_production
+  username: chaleville
+  password: <%= ENV['CHALEVILLE_DATABASE_PASSWORD'] %>

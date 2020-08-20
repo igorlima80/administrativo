@@ -1,0 +1,8 @@
+<%= render 'shared/index', list: @users, box_class: 'danger',
+  excluded_columns: ['encrypted_password', 'reset_password_token', 'reset_password_token_sent_at'],
+  table_no_padding: true do
+%>
+  <%= link_to new_user_url, class: 'btn btn-danger btn-xs' do %>
+    Cadastrar Usuário <i class='fa fa-plus'></i>
+  <% end %>
+<% end %>

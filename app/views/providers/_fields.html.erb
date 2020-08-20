@@ -1,0 +1,13 @@
+<div class="row">
+  <%= f.input :cnpj, wrapper_html: { class: 'col-md-3' } %>
+  <%= f.input :name, wrapper_html: { class: 'col-md-3' } %>
+  <%= f.input :nickname, wrapper_html: { class: 'col-md-3' } %>
+  <%= f.input :cpf, wrapper_html: { class: 'col-md-3' } %>
+</div>
+<div class="row">
+  <%= f.input :email, wrapper_html: { class: 'col-md-4' } %>
+  <%= f.input :principal_seller, wrapper_html: { class: 'col-md-5' } %>
+  <%= f.input :register, html5: true, wrapper_html: { class: 'col-md-3' } %>
+</div>
+<%= f.association :products, input_html: { class: 'select2' } %>
+<%= f.association :tasks, input_html: { class: 'select2' } %>

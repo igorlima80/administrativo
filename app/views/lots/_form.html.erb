@@ -1,0 +1,47 @@
+<%= simple_form_for([@unit, @lot]) do |f| %>
+  <div class="card card-outline card-danger">
+    <div class="card-header with-border">
+      <h3 class="card-title">
+        <%=t Product.model_name.human.pluralize %> do <%=t Lot.model_name.human %>
+        <%= f.input :kind, as: :hidden %>
+        <%= f.input :moment, as: :hidden, html5: true, wrapper_html: { class: 'col-md-4' } %>
+      </h3>
+      <%= link_to_add_association f, :components, class: 'btn btn-xs btn-success',
+        data: { 'association-insertion-node': '#products_table > tbody',
+          'association-insertion-method': 'append' } do %>
+        <i class="fa fa-fw fa-plus"></i> Adicionar Produto
+      <% end %>
+    </div>
+    <div class="card-body no-padding">
+      <table class='table table-bordered' id='products_table'>
+        <thead>
+          <tr>
+            <th width='25%'>Categoria</th>
+            <th width='25%'>Produto</th>
+            <% if f.object.kind == 'in' %>
+              <th width='25%'>Valor Unitário</th>
+            <% end %>
+            <% if f.object.kind == 'out' %>
+              <th width='25%'>Estoque</th>
+            <% end %>
+            <th width='10%'>Quantidade</th>
+            <th class='text-right'>Unidade</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= f.simple_fields_for :components do |part| %>
+            <%= render 'component_fields', f: part %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card card-outline card-danger">
+    <div class="card-footer">
+      <%= link_to t('.cancel', default: t("helpers.links.cancel")), unit_lots_path(@lot.unit), class: 'btn btn-default'  %>
+      <%= f.submit  t('.save', default: t("helpers.links.save")), class: 'btn btn-danger' %>
+    </div>
+  </div>
+<% end %>

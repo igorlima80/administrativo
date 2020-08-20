@@ -1,0 +1,93 @@
+<%= render 'shared/show', object: @product, box_class: 'danger',
+  relationships: {
+    providers: ['id', 'name', 'nickname']
+  }
+%>
+
+<div class="nav-tabs-custom">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#tab_2" data-toggle="tab" aria-expanded="false">Estoques</a></li>
+    <li class=""><a href="#tab_1" data-toggle="tab" aria-expanded="true">Movimentações</a></li>
+  </ul>
+  <div class="tab-content p-0">
+    <div class="tab-pane" id="tab_1">
+      <table class="table styletable table-striped table-hover">
+        <thead>
+          <tr>
+            <th class='text-center'>#</th>
+            <th class='text-center'><%= Lot.human_attribute_name(:product) %></th>
+            <th class='text-right'><%= Lot.human_attribute_name(:quantity) %></th>
+            <th class='text-right'><%= Lot.human_attribute_name(:unit_value) %></th>
+            <th class='text-center'><%= Lot.human_attribute_name(:kind) %></th>
+            <th class='text-center'><%= Lot.human_attribute_name(:unit1) %></th>
+            <th class='text-center'><%= Lot.human_attribute_name(:unit2) %></th>
+            <th class='text-center'><%= Lot.human_attribute_name(:moment) %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @product.components.each do |c| %>
+            <tr>
+              <td class='text-center'>
+                <%= link_to c.lot&.id, c&.lot %>
+              </td>
+              <td class='text-center'>
+                <%= c.product.name %>
+              </td>
+              <td class='text-right'>
+                <%= c.quantity %> <%= c.product.unity %>
+              </td>
+              <td class='text-right'>
+                <% if c.kind == 'in' %>
+                  <%= number_to_currency c.unit_value %>
+                <% end %>
+              </td>
+              <td class='text-center'>
+                <%=t c.kind %>
+              </td>
+              <td class='text-center'>
+                <%= link_to c.component.lot.unit.fullpath, unit_lots_path(c.component.lot.unit) if c.component %>
+              </td>
+              <td class='text-center'>
+                <%= link_to c.lot.unit.fullpath, unit_lots_path(c.lot.unit) if c.lot %>
+              </td>
+              <td class='text-center'>
+                <%=l c.lot.moment, format: :datetime if c.lot %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <!-- /.tab-pane -->
+    <div class="tab-pane active" id="tab_2">
+      <table class="table styletable table-striped table-hover">
+        <thead>
+          <tr>
+            <th class='text-center'><%= Product.human_attribute_name(:name) %></th>
+            <th class='text-right'><%= Product.human_attribute_name(:stock) %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @product.units.each do |u| %>
+            <% if @product.stock(unit_id: u.id) > 0 %>
+              <tr>
+                <td class='text-center'>
+                  <%= link_to u.fullpath, unit_lots_url(u) %>
+                </td>
+                <td class='text-right'>
+                  <%= @product.stock(unit_id: u.id) %> <%= @product.unity %>
+                </td>
+              </tr>
+            <% end %>
+          <% end %>
+          <tr>
+            <th class='text-right'><%= Product.human_attribute_name(:general_stock) %></th>
+            <td class='text-right'><%= @product.stock %> <%= @product.unity %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- /.tab-pane -->
+  </div>
+  <!-- /.tab-content -->
+</div>

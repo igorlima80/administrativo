@@ -1,0 +1,65 @@
+<%= simple_form_for([@bidding, @quotation]) do |f| %>
+  <div class="card card-outline card-danger">
+    <div class="card-header with-border">
+      <h3 class="card-title">
+        Dados do <%=t Quotation.model_name.human %>
+      </h3>
+    </div>
+    <div class="card-body no-padding">
+      <%= render 'biddings/show', bidding: @quotation.bidding %>
+    </div>
+  </div>
+
+  <div class="card card-outline card-danger">
+    <div class="card-header with-border">
+      <h3 class="card-title">
+        Registro de Preços
+      </h3>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <%= f.association :provider, wrapper_html: { class: 'col-md-3' }, input_html: { class: 'select2' } %>
+        <%= f.input :register, html5: true, wrapper_html: { class: 'col-md-3' } %>
+        <%= f.input :shipping, wrapper_html: { class: 'col-md-3' }, input_html: { class: 'currency' } %>
+        <%= f.input :term, wrapper_html: { class: 'col-md-3' } %>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-outline card-danger">
+    <div class="card-header with-border">
+      <h3 class="card-title">Produtos</h3>
+    </div>
+    <div class="card-body">
+      <div id="quotation_products">
+        <%= f.simple_fields_for :prices do |v| %>
+          <% unless v.object.product_id.nil? %>
+            <%= render 'price_fields', f: v, kind: 'product' %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-outline card-danger">
+    <div class="card-header with-border">
+      <h3 class="card-title">Serviços</h3>
+    </div>
+    <div class="card-body">
+      <div id="quotation_tasks">
+        <%= f.simple_fields_for :prices do |v| %>
+          <% unless v.object.task_id.nil? %>
+            <%= render 'price_fields', f: v, kind: 'task' %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-outline card-danger">
+    <div class="card-footer">
+      <%= link_to t('.cancel', default: t("helpers.links.cancel")), bidding_quotations_path(@quotation.bidding), class: 'btn btn-default'  %>
+      <%= f.submit  t('.save', default: t("helpers.links.save")), class: 'btn btn-danger' %>
+    </div>
+  </div>
+<% end %>

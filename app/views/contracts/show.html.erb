@@ -1,0 +1,37 @@
+<div class="card card-outline card-danger">
+  <div class="card-header with-border">
+    <h3 class="card-title">
+      <%= Contract.model_name.human %>
+      <%= link_to "javascript:history.back()", class: 'btn btn-default btn-xs' do %>
+        <i class='fa fa-arrow-circle-left'></i> <%= t('.back', default: t("helpers.links.back")) %>
+      <% end %>
+      <%= link_to edit_contract_path(@contract), class: 'btn btn-warning btn-xs' do %>
+        <i class='fa fa-pencil'></i> <%= t('.edit', default: t("helpers.links.edit")) %>
+      <% end %>
+    </h3>
+  </div>
+  <div class="card-body no-padding">
+    <table class='table table-striped styletable'>
+      <thead>
+        <tr>
+          <th class="text-center"><%= Contract.human_attribute_name(:user) %></th>
+          <th class="text-center"><%= Contract.human_attribute_name(:unit) %></th>
+          <th class="text-center"><%= Contract.human_attribute_name(:provider) %></th>
+          <th class="text-center"><%= Contract.human_attribute_name(:task) %></th>
+          <th class="text-center"><%= Contract.human_attribute_name(:moment) %></th>
+          <th class="text-right"><%= Contract.human_attribute_name(:value) %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="text-center"><%= @contract.user.the_name %></td>
+          <td class="text-center"><%= @contract.unit.fullpath %></td>
+          <td class="text-center"><%= @contract.provider.name %></td>
+          <td class="text-center"><%= @contract.task.name %></td>
+          <td class="text-center"><%=l  @contract.moment, format: :datetime %></td>
+          <td class="text-right text-red"><%= number_to_currency @contract.value %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+<div class="row phone nested-fields">
+  <div class="col-lg-12 col-xs-12">
+    <div class="row">
+      <div class="col-lg-2 col-xs-2">
+        <%= f.association :phone_type, collection: PhoneType.order(:name), input_html: { class: 'select2' } %>
+      </div>
+      <div class="col-lg-3 col-xs-3">
+        <%= f.input :number %>
+      </div>
+      <div class="col-md-1">
+        <%= link_to_remove_association f, class: 'remove_phone_fields' do %>
+          <div class="btn btn-danger top-25">
+            <i class="fa fa-fw fa-trash-alt"></i>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

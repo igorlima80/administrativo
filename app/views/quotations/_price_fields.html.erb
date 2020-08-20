@@ -1,0 +1,9 @@
+<div class="row price nested-fields">
+  <div class="col-lg-3 col-xs-3">
+    <%= f.association kind.to_sym, disabled: true %>
+    <%= f.input "#{kind}_id", as: :hidden %>
+  </div>
+  <div class="col-lg-2 col-xs-2">
+    <%= f.input :value, input_html: { class: 'currency' } %>
+  </div>
+</div>

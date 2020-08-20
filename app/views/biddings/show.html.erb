@@ -1,0 +1,37 @@
+<div class="card card-outline card-danger">
+  <div class="card-header with-border">
+    <h3 class="card-title">Cotação</h3>
+    <% if can? :edit, @bidding %> <!--verificando se o usuario esta logado-->
+      <%= link_to new_bidding_path, class: "btn btn-danger btn-xs", data: { toggle: 'tooltip', placement: 'top', title: 'Cadastrar' } do %>
+        <i class="fa fa-plus"></i> Cadastrar
+      <% end %>
+    <% end %>
+    <% if can? :edit, @bidding %> <!--verificando se o usuario esta logado-->
+      <%= link_to edit_bidding_path(@bidding), class: "btn btn-warning btn-xs", data: { toggle: 'tooltip', placement: 'top', title: 'Editar' } do %>
+        <i class="fa fa-pencil"></i> Editar
+      <% end %>
+    <% end %>
+    <%= link_to 'Listagem', biddings_path, class: "btn btn-default btn-xs" %>
+  </div>
+  <div class="card-body no-padding">
+    <%= render 'biddings/show', bidding: @bidding %>
+  </div>
+</div>
+
+<div class="card card-outline card-danger">
+  <div class="card-header with-border">
+    <h3 class="card-title">
+      <%= Quotation.model_name.human.pluralize %>
+      <% if can? :new, Quotation %> <!--verificando se o usuario esta logado-->
+        <%= link_to new_bidding_quotation_path(@bidding), class: "btn btn-danger btn-xs", data: { toggle: 'tooltip', placement: 'top', title: 'Cadastrar' } do %>
+          <i class="fa fa-plus"></i> Cadastrar
+        <% end %>
+      <% end %>
+    </h3>
+  </div>
+  <div class="card-body no-padding">
+    <% if @bidding.quotations.any? %>
+      <%= render 'shared/list', list: @bidding.quotations %>
+    <% end %>
+  </div>
+</div>

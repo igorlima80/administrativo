@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  link: MyString
+  icon: MyString
+  published: MyString
+  position: MyString
+  target: MyString
+  permission: MyString
+  permission_check: MyString
+
+two:
+  name: MyString
+  link: MyString
+  icon: MyString
+  published: MyString
+  position: MyString
+  target: MyString
+  permission: MyString
+  permission_check: MyString

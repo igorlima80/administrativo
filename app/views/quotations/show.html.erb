@@ -1,0 +1,110 @@
+<div class="card card-outline card-danger">
+  <div class="card-header with-border">
+    <h3 class="card-title">Cotação</h3>
+    <% if can? :edit, @quotation %> <!--verificando se o usuario esta logado-->
+      <%= link_to edit_quotation_path(@quotation), class: "btn btn-warning btn-xs", data: { toggle: 'tooltip', placement: 'top', title: 'Editar' } do %>
+        <i class="fa fa-pencil"></i> Editar
+      <% end %>
+    <% end %>
+    <%= link_to 'Listagem', bidding_quotations_path(@quotation.bidding), class: "btn btn-default btn-xs" %>
+  </div>
+  <div class="card-body no-padding">
+    <%= render 'biddings/show', bidding: @quotation.bidding %>
+  </div>
+</div>
+
+<div class="card card-outline card-danger">
+  <div class="card-header with-border">
+    <h3 class="card-title">Dados Registrados</h3>
+  </div>
+  <div class="card-body no-padding">
+    <table class="table table-bordered table-striped no-padding styletable">
+      <thead>
+        <th><%= Provider.model_name.human %></th>
+        <th><%= Quotation.human_attribute_name(:shipping) %></th>
+        <th><%= Quotation.human_attribute_name(:term) %></th>
+        <th><%= Quotation.human_attribute_name(:register) %></th>
+      </thead>
+      <tbody>
+        <tr>
+          <td><%= @quotation.provider.name %></td>
+          <td><%= number_to_currency @quotation.shipping %></td>
+          <td><%= @quotation.term %> dias</td>
+          <td><%=l @quotation.register if @quotation.register %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<% if @quotation.products_prices.any? %>
+  <div class="card card-outline card-danger">
+    <div class="card-header with-border">
+      <h3 class="card-title">
+        Cotação dos <%= Product.model_name.human.pluralize %>
+      </h3>
+    </div>
+    <div class="card-body no-padding">
+      <table class="table table-bordered table-striped no-padding styletable">
+        <thead>
+          <tr>
+            <th width='15%'>
+              <%= Price.human_attribute_name(:product) %>
+            </th>
+            <th>
+              <%= Price.human_attribute_name(:value) %>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @quotation.products_prices.each do |pr| %>
+            <tr>
+              <td>
+                <%= pr.product.name %>
+              </td>
+              <td>
+                <%= number_to_currency pr.value %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% end %>
+
+<% if @quotation.tasks_prices.any? %>
+  <div class="card card-outline card-danger">
+    <div class="card-header with-border">
+      <h3 class="card-title">
+        Cotação dos <%= Task.model_name.human.pluralize %>
+      </h3>
+    </div>
+    <div class="card-body no-padding">
+      <table class="table table-bordered table-striped no-padding styletable">
+        <thead>
+          <tr>
+            <th width='15%'>
+              <%= Price.human_attribute_name(:task) %>
+            </th>
+            <th>
+              <%= Price.human_attribute_name(:value) %>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @quotation.tasks_prices.each do |pr| %>
+            <tr>
+              <td>
+                <%= pr.task.name %>
+              </td>
+              <td>
+                <%= number_to_currency pr.value %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% end %>

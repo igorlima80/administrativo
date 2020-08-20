@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  number: MyString
+  emission: 2019-01-16
+  department: MyString
+  state: one
+  document_type: one
+  documentable_id: 1
+  documentable_type: MyString
+
+two:
+  number: MyString
+  emission: 2019-01-16
+  department: MyString
+  state: two
+  document_type: two
+  documentable_id: 1
+  documentable_type: MyString

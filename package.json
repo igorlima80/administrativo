@@ -1,0 +1,38 @@
+{
+  "name": "chaleville",
+  "private": true,
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.12.0",
+    "@rails/actioncable": "^6.0.2-1",
+    "@rails/activestorage": "^6.0.2-1",
+    "@rails/ujs": "^6.0.2-1",
+    "@rails/webpacker": "^4.2.2",
+    "admin-lte": "^3.0.2",
+    "bootstrap": "^4.4.1",
+    "bootstrap-table": "^1.15.5",
+    "cocoon-rails": "^1.2.6",
+    "datatables.net": "^1.10.19",
+    "datatables.net-bs": "^1.10.19",
+    "datatables.net-responsive-bs": "^2.2.3",
+    "font-awesome": "^4.7.0",
+    "inputmask": "^5.0.3",
+    "jquery": "^3.4.1",
+    "jstree": "^3.3.8",
+    "popper.js": "^1.16.0",
+    "resolve-url-loader": "^3.1.1",
+    "select2": "^4.0.7-rc.0",
+    "select2-bootstrap-theme": "^0.1.0-beta.10",
+    "selectize": "^0.12.6",
+    "selectize-bootstrap4-theme": "^2.0.2",
+    "turbolinks": "^5.2.0",
+    "typeface-titillium-web": "^0.0.72"
+  },
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@bitbucket.org:zezim/chaleville.git",
+  "author": "Ricardo Viana <zezim.ricardo@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "webpack-dev-server": "^3.10.1"
+  }
+}

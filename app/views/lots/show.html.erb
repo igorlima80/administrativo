@@ -1,0 +1,75 @@
+<div class="card card-outline card-danger">
+  <div class="card-header with-border">
+    <h3 class="card-title">
+      <%=t Lot.model_name.human %>
+      <%= link_to "javascript:history.back()", class: 'btn btn-default btn-xs' do %>
+        <i class='fa fa-arrow-circle-left'></i> <%= t('.back', default: t("helpers.links.back")) %>
+      <% end %>
+      <%= link_to edit_lot_path(@lot), class: 'btn btn-warning btn-xs' do %>
+        <i class='fa fa-pencil'></i> <%= t('.edit', default: t("helpers.links.edit")) %>
+      <% end %>
+    </h3>
+  </div>
+  <div class="card-body">
+    <div class="fieldset">
+      <dl>
+        <div class="row">
+          <div class="col-md-6">
+            <dt><%= Lot.human_attribute_name(:moment) %></dt>
+            <dd><pre class="prettyprint"><%= l @lot.moment, format: :datetime %>&nbsp;</pre></dd>
+          </div>
+          <div class="col-md-6">
+            <dt><%= Lot.human_attribute_name(:unit) %></dt>
+            <dd><pre class="prettyprint"><%= @lot.unit&.fullpath %>&nbsp;</pre></dd>
+          </div>
+        </div>
+      </dl>
+    </div>
+  </div>
+</div>
+
+<div class="card card-outline card-danger">
+  <div class="card-header with-border">
+    <h3 class="card-title">
+      <%=t Product.model_name.human.pluralize %>
+    </h3>
+  </div>
+  <div class="card-body no-padding">
+    <table class="table styletable table-striped table-hover">
+      <thead>
+        <tr>
+          <th class='text-center'>#</th>
+          <th class='text-center'><%= Lot.human_attribute_name(:product) %></th>
+          <th class='text-center'><%= Lot.human_attribute_name(:quantity) %></th>
+          <th class='text-center'><%= Lot.human_attribute_name(:unit1) %></th>
+          <th class='text-center'><%= Lot.human_attribute_name(:unit2) %></th>
+          <th class='text-center'><%= Lot.human_attribute_name(:moment) %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @lot.components.each do |c| %>
+          <tr>
+            <td class='text-center'>
+              <%= c.id %>
+            </td>
+            <td class='text-center'>
+              <%= c.product.name %>
+            </td>
+            <td class='text-center'>
+              <%= c.quantity %> <%= c.product.unity %>
+            </td>
+            <td class='text-center'>
+              <%= link_to c.component.unit.fullpath, unit_lots_path(c.component.unit) if c.component %>
+            </td>
+            <td class='text-center'>
+              <%= link_to c.lot.unit.fullpath, unit_lots_path(c.lot.unit) %>
+            </td>
+            <td class='text-center'>
+              <%=l c.lot.moment, format: :datetime if c.lot.moment %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  bidding: one
+  product: one
+  task: one
+
+two:
+  bidding: two
+  product: two
+  task: two

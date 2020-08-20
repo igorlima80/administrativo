@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  agency: MyString
+  number: MyString
+  operation: MyString
+  bank: one
+  bank_account_type: one
+  accountable_id: 1
+  accountable_type: MyString
+
+two:
+  agency: MyString
+  number: MyString
+  operation: MyString
+  bank: two
+  bank_account_type: two
+  accountable_id: 1
+  accountable_type: MyString

@@ -1,0 +1,108 @@
+<div class="row">
+  <div class="col-xs-2">
+    <%= wicked_pdf_image_tag 'chaleville_logo.png', width: '120px' %>
+  </div>
+  <div class="col-xs-10">
+    <h4>
+      SGC - Sistema de Gestão Chaleville
+    </h4>
+    <h5>
+      Relatório de Pedido
+    </h5>
+  </div>
+</div>
+
+<div class="card card-outline card-danger">
+</div>
+
+<div class="card card-outline card-danger">
+  <div class="card-header with-border">
+    <h3 class="card-title">
+      <%= Order.model_name.human %> #<%= @order.id %>
+    </h3>
+    <div class="pull-right">
+      <strong><%= Order.human_attribute_name(:moment) %>: </strong>
+      <%= l @order.moment, format: :datetime %>
+    </div>
+  </div>
+</div>
+ 
+<table class="table table-striped table-hover table-bordered">
+  <thead>
+    <tr>
+      <th width='50%'><%= Order.human_attribute_name(:provider) %></th>
+      <th><%= Order.human_attribute_name(:unit) %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= @order.provider&.name %></td>
+      <td><%= @order.unit&.fullpath %></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="card card-outline card-danger">
+  <div class="card-header with-border">
+    <h3 class="card-title">
+      <%= Product.model_name.human.pluralize %>
+    </h3>
+  </div>
+</div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th class='text-center'>#</th>
+      <th class='text-center'><%= Component.human_attribute_name(:product) %></th>
+      <th class='text-right'><%= Component.human_attribute_name(:solicited_quantity) %></th>
+      <th class='text-right'><%= Order.human_attribute_name(:quantity) %></th>
+      <th class='text-right'><%= Component.human_attribute_name(:unit_value) %></th>
+      <th class='text-right'><%= Component.human_attribute_name(:total) %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @order.components.each do |c| %>
+      <tr>
+        <td class='text-center'>
+          <%= c.id %>
+        </td>
+        <td class='text-center'>
+          <%= c.product.name %>
+        </td>
+        <td class='text-right'>
+          <%= c.solicited_quantity %> <%= c.product.unity %>
+        </td>
+        <td class='text-right'>
+          <% if c.quantity %>
+            <%= c.quantity %> <%= c.product.unity %>
+          <% end %>
+        </td>
+        <td class='text-right'>
+          <%= number_to_currency c.unit_value %>
+        </td>
+        <td class='text-right'>
+          <%= number_to_currency c.total_value %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td class="text-right">
+        <strong>
+          TOTAL
+        </strong>
+      </td>
+      <td class='text-right'>
+        <strong>
+          <%= number_to_currency @order.total_value %>
+        </strong>
+      </td>
+    </tr>
+  </tfoot>
+</table>
